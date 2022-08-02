@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +13,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
+Route::name('user.')
+    ->controller(UserController::class)
+    ->group(function(){
+        Route::get('/trash','history')->name('trash');
+        Route::delete('/force/delete/{trash_user}','forceDelete')->name('forceDelete');
 });
+Route::resource('user',UserController::class);
+Route::redirect('/',route('user.index'),302);
